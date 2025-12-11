@@ -1,4 +1,3 @@
-import javax.management.RuntimeErrorException;
 
 public class App {
     public static void main(String[] args) throws InterruptedException {
@@ -17,7 +16,7 @@ public class App {
         return array;
     }
 
-    public static void mostrarArray(int[][] array) {
+    public static void mostrarArray(int[][] array) throws InterruptedException {
         System.out.println();
         for (int i = 0; i < array.length; i++)
             muestraFila(array, i);
@@ -25,8 +24,8 @@ public class App {
         muestraTotales(array);
     }
 
-    public static void muestraFila(int[][] array, int fila) {
-        int suma = 0, valor = 0;
+    public static void muestraFila(int[][] array, int fila) throws InterruptedException  {
+        int suma = 0, valor;
         for (int j = 0; j < array[fila].length; j++) {
             valor = array[fila][j];
             muestraValor("%7d", valor, 800);
@@ -37,14 +36,15 @@ public class App {
 
     public static int sumaColumna(int[][] array, int columna) {
         int suma = 0;
-        for (int i = 0; i < array.length; i++)
-            suma += array[i][columna];
+        for (int[] array1 : array) {
+            suma += array1[columna];
+        }
         return suma;
     }
 
-    public static void muestraTotales(int[][] array) {
-        int suma = 0, total = 0;;
-        for (int i = 0; i < array[0].length; i++) {
+    public static void muestraTotales(int[][] array) throws InterruptedException {
+        int suma = 0, total;
+        for (int i: array[0]) {
             total = sumaColumna(array, i);
             muestraValor("%7d", total, 1000);
             suma += total;
@@ -52,12 +52,8 @@ public class App {
         muestraValor("  |%7d%n%n", suma, 1500);
     }
 
-    public static void muestraValor(String texto, int valor, int tiempo) {
-        try {
-            Thread.sleep(tiempo);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    public static void muestraValor(String texto, int valor, int tiempo) throws InterruptedException {
+        Thread.sleep(tiempo);
         System.out.printf(texto, valor);
     }
 }
